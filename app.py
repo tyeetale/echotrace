@@ -3,89 +3,121 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-from tree_manager import NodeManager
 from chat_engine import ChatEngine
+from tree_manager import NodeManager, Node, Branch
+from session_manager import SessionManager
 
+# ------------ INIT & CONFIG ---------------
+st.set_page_config(page_title="EchoTrace", layout="wide")
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-chat = ChatEngine(api_key=OPENAI_API_KEY)
-tree = NodeManager(storage_path="data/conversations.json")
-
 AVAILABLE_MODELS = [
     "gpt-3.5-turbo",
     "gpt-4",
     "gpt-4-turbo",
     "gpt-4o",
 ]
-# Set default model in session state
-if "openai_model" not in st.session_state:
-    st.session_state.openai_model = "gpt-4"
 
-cols = st.sidebar.columns([2, 1])
-with cols[0]:
-    model_choice = st.selectbox("Model", AVAILABLE_MODELS, key="openai_model", label_visibility="collapsed")
-with cols[1]:
-    if st.button("➕", help="Create new chat"):        
-        # Create NEW Root node & NEW Branch
-        from tree_manager import Node, Branch
-        # Create new root node
-        root = Node("Start your conversation...", "Hi! How can I help you?")
-        tree.nodes[root.id] = root
-        # Create new branch
-        branch = Branch("main", root.id)
-        tree.branches[branch.id] = branch
-        tree.current_branch_id = branch.id
-        tree.current_node_id = root.id
-        tree.save()
-        st.session_state.current_branch_id = branch.id
-        st.session_state.current_node_id = root.id
-        # Optionally clear model pick or keep it
-        st.rerun()
-        
-# --- Guarantee persistent state always has at least one branch and node ---
-if not hasattr(tree, "branches") or not tree.branches or not hasattr(tree, "nodes") or not tree.nodes:
-    root = tree.nodes[list(tree.nodes.keys())[0]] if tree.nodes else None
-    if not root:
-        from tree_manager import Node, Branch
-        root = Node("Start your conversation...", "Hi! How can I help you?")
-        tree.nodes[root.id] = root
-    if not tree.branches:
-        from tree_manager import Branch
-        branch = Branch("main", root.id)
-        tree.branches[branch.id] = branch
-        tree.current_branch_id = branch.id
-    if not tree.current_node_id:
-        tree.current_node_id = root.id
+####---- SESSION SETUP AND LOADING ----####
+sess_mgr = SessionManager()
+def load_sessions():
+    """Always reload & rebuild session lists"""
+    sessions = sess_mgr.list_sessions()
+    session_titles = [s["title"] for s in sessions]
+    session_files = [str(s["filename"]) for s in sessions]
+    return sessions, session_titles, session_files
+
+sessions, session_titles, session_files = load_sessions()
+
+if not session_files:
+    # Ensure at least one session exists
+    sess_mgr.create_session()
+    sessions, session_titles, session_files = load_sessions()
+
+if not session_files:
+    st.error("Could not create or find a session file. Check session storage and file permissions.")
+    st.stop()
+
+
+####---- SIDEBAR UI ----####
+sidebar_top = st.sidebar.container()
+
+# --- Model dropdown --- #
+model_ix = AVAILABLE_MODELS.index("gpt-4") if "gpt-4" in AVAILABLE_MODELS else 0
+model = sidebar_top.selectbox(
+    "Model",
+    AVAILABLE_MODELS,
+    index=model_ix,
+    key="openai_model"
+)
+sidebar_top.markdown("**Conversation**")
+
+# --- New conversation button --- #
+if sidebar_top.button("➕ Start a new conversation"):
+    fn = sess_mgr.create_session()
+    sessions, session_titles, session_files = load_sessions()
+    cur_idx = session_files.index(str(fn))
+    st.session_state["conv_selector_target_idx"] = cur_idx    # <--- for next rerun
+    st.session_state["cur_session"] = str(fn)
+    for k in ["current_branch_id", "current_node_id"]:
+        if k in st.session_state:
+            del st.session_state[k]
+    st.rerun()
+
+# --- Conversation selectbox --- #
+selectbox_index = 0
+if "conv_selector_target_idx" in st.session_state:
+    selectbox_index = st.session_state.pop("conv_selector_target_idx")
+elif "cur_session" in st.session_state and st.session_state["cur_session"] in session_files:
+    selectbox_index = session_files.index(st.session_state["cur_session"])
+
+conv_idx = sidebar_top.selectbox(
+    "",
+    options=list(range(len(sessions))),
+    format_func=lambda i: session_titles[i],
+    index=selectbox_index,
+    key="conv_selector"
+)
+st.session_state["cur_session"] = session_files[conv_idx]
+
+####---- LOAD CURRENT SESSION ----####
+tree = NodeManager(storage_path=st.session_state["cur_session"])
+chat = ChatEngine(api_key=OPENAI_API_KEY)
+
+# Guarantee 1 branch/node for new conversation
+if not tree.branches or not tree.nodes:
+    root = Node("default", "Ask a question!")
+    tree.nodes[root.id] = root
+    main_branch = Branch("main", root.id)
+    tree.branches[main_branch.id] = main_branch
+    tree.current_branch_id = main_branch.id
+    tree.current_node_id = root.id
     tree.save()
 
+# Recalculate branch/node state from file if missing
 if "current_branch_id" not in st.session_state or st.session_state.current_branch_id not in tree.branches:
-    st.session_state.current_branch_id = tree.current_branch_id or list(tree.branches.keys())[0]
-    tree.current_branch_id = st.session_state.current_branch_id
-
+    st.session_state.current_branch_id = tree.current_branch_id
 if "current_node_id" not in st.session_state or st.session_state.current_node_id not in tree.nodes:
     last_nid = tree.branches[tree.current_branch_id].node_ids[-1]
     st.session_state.current_node_id = last_nid
-    tree.current_node_id = last_nid
 
-# Always sync NodeManager's state from the session
 tree.current_branch_id = st.session_state.current_branch_id
 tree.current_node_id = st.session_state.current_node_id
 
-# --- App UI & chat ---
-timeline_nodes = tree.get_branch_timeline_nodes()  # In order, for current branch
+####---- MAIN APP BODY ----####
 
-st.set_page_config(page_title="EchoTrace", layout="wide")
 st.markdown(
     """<h1 style='display:flex;align-items:center;gap:1em;'>
     <span style='font-size:2em;'>🌿</span> <span>EchoTrace</span>
     </h1>
     <div style='font-size:1.1em;color:gray;margin-bottom:1.5em;'>
-        Branchable AI chat system — explore multiple threads of thought.
+        Branchable AI chat system — explore multiple threads of thought. Each conversation is independent.
     </div>
-    """, unsafe_allow_html=True
+    """,
+    unsafe_allow_html=True,
 )
 
+timeline_nodes = tree.get_branch_timeline_nodes()
 for node in timeline_nodes:
     if node.user_msg:
         with st.chat_message("user"):
@@ -98,7 +130,6 @@ if prompt := st.chat_input("Type your message..."):
     with st.chat_message("user"):
         st.markdown(prompt)
     with st.spinner("Thinking..."):
-        # Prepare messages for the AI: full conversation so far, then new user prompt
         messages = []
         for node in timeline_nodes:
             if node.user_msg:
@@ -106,25 +137,19 @@ if prompt := st.chat_input("Type your message..."):
             if node.ai_msg:
                 messages.append({'role': 'assistant', 'content': node.ai_msg})
         messages.append({'role': 'user', 'content': prompt})
-        response = chat.get_response(messages)
+        response = chat.get_response(messages, model=st.session_state.openai_model)
     with st.chat_message("assistant"):
         st.markdown(response)
     new_node = tree.add_node(prompt, response, parent_id=tree.current_node_id)
     st.session_state.current_node_id = tree.current_node_id
     st.rerun()
 
-# --- SIDEBAR ---
-st.sidebar.markdown(
-    "<div style='font-weight:700;font-size:1.3em;margin-bottom:.8em;'>Conversations</div>",
-    unsafe_allow_html=True
-)
+#### ---- SIDEBAR CONTINUES: BRANCH & TIMELINE ---- ####
 
-    # --- Branch Selector ---
+st.sidebar.markdown("<b>Branches</b>", unsafe_allow_html=True)
 branch_names = {b.id: b.name for b in tree.branches.values()}
 options_list = list(branch_names.keys())
 cur_idx = options_list.index(tree.current_branch_id)
-
-# Only show a dropdown if >1 branch, else static label
 if len(options_list) > 1:
     branch_selector = st.sidebar.selectbox(
         "Branch:",
@@ -133,7 +158,6 @@ if len(options_list) > 1:
         index=cur_idx
     )
     if branch_selector != tree.current_branch_id:
-        # Switch branch: jump to last node in that branch
         tree.current_branch_id = branch_selector
         st.session_state.current_branch_id = branch_selector
         last_nid = tree.branches[branch_selector].node_ids[-1]
@@ -141,15 +165,7 @@ if len(options_list) > 1:
         st.session_state.current_node_id = last_nid
         st.rerun()
 else:
-    st.sidebar.markdown(
-        f'<div><b>Branch: {branch_names[tree.current_branch_id]}</b></div>',
-        unsafe_allow_html=True
-    )
-
-st.sidebar.markdown(
-    "<div style='color:#bbb;margin-bottom:1.1em;'>Branch = a threaded chat (forks from others). Branches and their history persist.</div>",
-    unsafe_allow_html=True
-)
+    st.sidebar.markdown(f'<b>Branch: {branch_names[tree.current_branch_id]}</b>', unsafe_allow_html=True)
 st.sidebar.markdown("<b>Timeline:</b>", unsafe_allow_html=True)
 timeline_nodes = tree.get_branch_timeline_nodes()
 
@@ -157,7 +173,6 @@ for idx, node in enumerate(timeline_nodes):
     msg_time = datetime.fromisoformat(node.timestamp).strftime("%H:%M")
     preview = (node.user_msg or '')[:20].replace('\n', ' ')
     is_tip = (node.id == timeline_nodes[-1].id)
-
     txt = f"<span style='color:#aaa;'>{msg_time}</span> — <b>{preview}</b>"
     cols = st.sidebar.columns([5,1]) if not is_tip else [st.sidebar, None]
     with cols[0]:
@@ -180,7 +195,6 @@ if "branching_node" in st.session_state and st.session_state["branching_node"]:
         tree.create_branch_from(final_name, node_id)
         st.session_state.current_branch_id = tree.current_branch_id
         st.session_state.current_node_id = tree.current_node_id
-        # CLEAR: Remove the branching_node, let text_input clear on next run
         del st.session_state["branching_node"]
         if "new_branch_name" in st.session_state:
             del st.session_state["new_branch_name"]

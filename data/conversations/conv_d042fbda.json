@@ -1,0 +1,43 @@
+{
+  "nodes": [
+    {
+      "id": "e233034a-875c-4cf4-91ca-ddaa9a33ea10",
+      "user_msg": "Start your conversation...",
+      "ai_msg": "Hi! How can I help you?",
+      "parent_id": null,
+      "annotations": "",
+      "timestamp": "2025-07-05T02:35:03.879244"
+    },
+    {
+      "id": "002cfef7-d3cf-48ca-8476-5b243ffdd93f",
+      "user_msg": "how r",
+      "ai_msg": "I'm doing well, thank you! How can I assist you today?",
+      "parent_id": "e233034a-875c-4cf4-91ca-ddaa9a33ea10",
+      "annotations": "",
+      "timestamp": "2025-07-05T02:35:08.974020"
+    },
+    {
+      "id": "cbe80ada-4c5b-4cbd-9b3f-ccc1880d04d5",
+      "user_msg": "doing good",
+      "ai_msg": "That's great to hear! If there's anything you need assistance with or any question you have, feel free to ask.",
+      "parent_id": "002cfef7-d3cf-48ca-8476-5b243ffdd93f",
+      "annotations": "",
+      "timestamp": "2025-07-05T02:35:18.598658"
+    }
+  ],
+  "current_node_id": "cbe80ada-4c5b-4cbd-9b3f-ccc1880d04d5",
+  "branches": [
+    {
+      "id": "09317a60-fd92-4129-b2d1-4e93d50dcf53",
+      "name": "main",
+      "root_node_id": "e233034a-875c-4cf4-91ca-ddaa9a33ea10",
+      "node_ids": [
+        "e233034a-875c-4cf4-91ca-ddaa9a33ea10",
+        "002cfef7-d3cf-48ca-8476-5b243ffdd93f",
+        "cbe80ada-4c5b-4cbd-9b3f-ccc1880d04d5"
+      ],
+      "created_at": "2025-07-05T02:35:03.879257"
+    }
+  ],
+  "current_branch_id": "09317a60-fd92-4129-b2d1-4e93d50dcf53"
+}
