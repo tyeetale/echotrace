@@ -1,0 +1,34 @@
+{
+  "nodes": [
+    {
+      "id": "6235141c-85f1-439e-898b-d60b0efc226c",
+      "user_msg": "Start your conversation...",
+      "ai_msg": "Hi! How can I help you?",
+      "parent_id": null,
+      "annotations": "",
+      "timestamp": "2025-07-06T09:27:15.237693"
+    },
+    {
+      "id": "a2014ba8-bc0f-45f6-9afb-b2fceec239db",
+      "user_msg": "show me what i'm doing wrong with my taefik config",
+      "ai_msg": "To assist you, I will need a little more information. Could you please provide me with the details of your current Traefik configuration? Also, please let me know about the issues or error messages you're encountering.",
+      "parent_id": "6235141c-85f1-439e-898b-d60b0efc226c",
+      "annotations": "",
+      "timestamp": "2025-07-06T09:32:50.344733"
+    }
+  ],
+  "current_node_id": "a2014ba8-bc0f-45f6-9afb-b2fceec239db",
+  "branches": [
+    {
+      "id": "aeae5f5e-b335-486a-8edc-da5a6ec3be2f",
+      "name": "main",
+      "root_node_id": "6235141c-85f1-439e-898b-d60b0efc226c",
+      "node_ids": [
+        "6235141c-85f1-439e-898b-d60b0efc226c",
+        "a2014ba8-bc0f-45f6-9afb-b2fceec239db"
+      ],
+      "created_at": "2025-07-06T09:27:15.237706"
+    }
+  ],
+  "current_branch_id": "aeae5f5e-b335-486a-8edc-da5a6ec3be2f"
+}

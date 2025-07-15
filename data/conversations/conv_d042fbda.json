@@ -23,9 +23,33 @@
       "parent_id": "002cfef7-d3cf-48ca-8476-5b243ffdd93f",
       "annotations": "",
       "timestamp": "2025-07-05T02:35:18.598658"
+    },
+    {
+      "id": "0a2c18da-cc76-4bc1-b4c8-8a9c8b31547d",
+      "user_msg": "give me the summary of billions and what happened with bobby axelrod vs prince",
+      "ai_msg": "\"Billions\" is a television drama series created by Brian Koppelman, David Levien, and Andrew Ross Sorkin. The storyline focuses on the collision between two powerful New York figures. The first one is Bobby Axelrod (Damian Lewis), a self-made billionaire, manager of the hedge fund Axe Capital, and his adversary, U.S. Attorney Chuck Rhoades (Paul Giamatti).\n\nIn recent seasons, another character has been significance which is Michael Prince (Corey Stoll). Prince is a rival hedge fund manager who becomes a major challenger to Axelrod's machinations. One of the central parts of the show involves Axelrod and Prince's rivalry, with each trying to outwit the other and secure an advantage in the cutthroat world of finance.\n\nBy the end of Season 5, Prince (with the help of Rhoades) has managed to usurp Axelrod as the manager of Axe Capital. In the process, Axelrod is stripped of his billionaire status and left on the outside of the company he created. \n\nThis creates an interesting setup for future seasons as Bobby Axelrod now has to fight to reclaim his position, wealth and power from Prince. Please keep in mind that when it comes to specific episodes or recent seasons, the plot can be more detailed and intricate.",
+      "parent_id": "cbe80ada-4c5b-4cbd-9b3f-ccc1880d04d5",
+      "annotations": "",
+      "timestamp": "2025-07-06T19:27:13.817189"
+    },
+    {
+      "id": "480a2167-4590-482a-a041-348476836371",
+      "user_msg": "what about s6 and s7",
+      "ai_msg": "The sixth season of \"Billions\" premiered on January 23, 2022. In this latest season, the story follows Bobby Axelrod as he fights to reclaim his company and power which he lost to Mike Prince at the end of the fifth season. However, the season also significantly expanded the character of Winston (played by Will Roland) who develops into a more pivotal role.\n\nUnfortunately, as of my current knowledge, specifics about the developments of Season 6 and the plot for the upcoming Season 7 have not been disclosed to avoid spoiling the series for viewers. It's also important to note that the narrative often takes unexpected turns and has complex subplots for the different characters involved. I highly recommend watching the seasons as they unfold for the most accurate and immersive experience!",
+      "parent_id": "0a2c18da-cc76-4bc1-b4c8-8a9c8b31547d",
+      "annotations": "",
+      "timestamp": "2025-07-06T19:27:38.675213"
+    },
+    {
+      "id": "d8b6a9c1-7599-4046-8f3e-0a4028a39d76",
+      "user_msg": "what is the extend of your knowledge? was is your most up to date info",
+      "ai_msg": "My knowledge is based on information available up to 2023. For TV shows and films, I can provide summaries and information based on released seasons and publicly available details, including cast information, general plotlines, and character developments up until that point.\n\nFor \"Billions,\" I can discuss details through Season 6, as Season 7 details might not be fully disclosed or could be subject to change depending on when it releases and how the producers decide to unveil the storyline. For the most current and detailed information, especially for ongoing series like \"Billions,\" checking the latest updates from official sources or recent broadcasting schedules can give you the most accurate insights.",
+      "parent_id": "480a2167-4590-482a-a041-348476836371",
+      "annotations": "",
+      "timestamp": "2025-07-06T19:29:19.537399"
     }
   ],
-  "current_node_id": "cbe80ada-4c5b-4cbd-9b3f-ccc1880d04d5",
+  "current_node_id": "d8b6a9c1-7599-4046-8f3e-0a4028a39d76",
   "branches": [
     {
       "id": "09317a60-fd92-4129-b2d1-4e93d50dcf53",
@@ -34,7 +58,10 @@
       "node_ids": [
         "e233034a-875c-4cf4-91ca-ddaa9a33ea10",
         "002cfef7-d3cf-48ca-8476-5b243ffdd93f",
-        "cbe80ada-4c5b-4cbd-9b3f-ccc1880d04d5"
+        "cbe80ada-4c5b-4cbd-9b3f-ccc1880d04d5",
+        "0a2c18da-cc76-4bc1-b4c8-8a9c8b31547d",
+        "480a2167-4590-482a-a041-348476836371",
+        "d8b6a9c1-7599-4046-8f3e-0a4028a39d76"
       ],
       "created_at": "2025-07-05T02:35:03.879257"
     }
