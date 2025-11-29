@@ -1,4 +1,0 @@
-- fix conversations bug to ensure customized saves
-- expand to multimodal mode (image upload)
-- improve readme and docs
-- save conversations to a SQLite local db instead of json files

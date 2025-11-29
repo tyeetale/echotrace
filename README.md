@@ -1,6 +1,21 @@
 # 🌿 EchoTrace - Modern Branchable AI Conversations
 
-**EchoTrace** is a modern, branchable AI conversation system built with Vue.js 3, TypeScript, Quasar, and FastAPI. It allows you to fork conversations at any point, explore multiple AI-generated paths, and trace your thinking over time with an intuitive tree-based interface.
+**EchoTrace** is a modern, branchable AI conversation system built with the intention to fork conversations at any point, explore multiple AI-generated paths, and trace your thinking over time with an intuitive tree-based interface. It should be a quality of life improvement to common other chats, but the key is to use this for intermediate-to-advanced AI users, who are trying to use AI for work, project management, and work that requires long context management and deep conversation control.
+
+## Problem Statement
+
+most AI chat UI’s force conversations into a strict linear timeline. This means:
+
+- contextual entanglement - model context is polluted everytime we explore a subtopic
+- no true checkpoints or rollbacks
+- conversations become unsearchable over time
+- no interop between sessions
+
+Therefore, there needs to be a system that treats AI conversations as structured, revisitable, branchable knowledge work—not ephemeral chat bubbles.
+
+Rather than a chat app, we need:
+
+> **a semantic graphical conversational IDE that is version controlled.**
 
 ## ✨ Features
 
@@ -17,6 +32,7 @@
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Vue.js 3** with Composition API
 - **TypeScript** for type safety
 - **Quasar Framework** for UI components
@@ -25,6 +41,7 @@
 - **Vite** for fast development and building
 
 ### Backend
+
 - **FastAPI** for high-performance API
 - **SQLAlchemy** for database ORM
 - **SQLite** for local data storage
@@ -34,6 +51,7 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ and npm
 - Python 3.9+
 - OpenAI API key
@@ -41,12 +59,14 @@
 ### Installation
 
 1. **Clone and setup**
+
    ```bash
    git clone <repository-url>
    cd echotrace
    ```
 
 2. **Setup backend**
+
    ```bash
    cd backend
    python -m venv venv
@@ -57,25 +77,28 @@
    ```
 
 3. **Setup frontend**
+
    ```bash
    cd ../frontend
    npm install
    ```
 
 4. **Start both servers**
+
    ```bash
    # From project root
    ./start.sh
    ```
 
    Or start manually:
+
    ```bash
    # Terminal 1 - Backend
    cd backend
    source venv/bin/activate
    python run.py
 
-   # Terminal 2 - Frontend  
+   # Terminal 2 - Frontend
    cd frontend
    npm run dev
    ```
@@ -109,18 +132,21 @@ echotrace/
 ## 🎯 Core Concepts
 
 ### Conversations
+
 - **Conversations** are the top-level containers
 - Each conversation has multiple **branches**
 - Branches represent different conversation paths
 - Only one branch is "active" at a time
 
 ### Nodes
+
 - **Nodes** are individual messages in a conversation
 - Each node can have a user message, AI response, or both
 - Nodes are connected in a tree structure
 - You can branch from any node to create alternative paths
 
 ### Branching
+
 - Click any message to create a new branch
 - Branches inherit the conversation history up to that point
 - Switch between branches to explore different paths
@@ -129,22 +155,26 @@ echotrace/
 ## 🎮 Usage
 
 ### Creating Conversations
+
 1. Click the "+" button in the sidebar
 2. Enter a conversation title
 3. Start chatting with the AI
 
 ### Branching
+
 1. Click the tree icon (🌱) next to any message
 2. Enter a branch name
 3. Continue the conversation from that point
 
 ### Navigation
+
 - Use the tree view to see the full conversation structure
 - Click nodes to jump to specific messages
 - Switch between branches using the branch panel
 - Use zoom controls to navigate large trees
 
 ### Keyboard Shortcuts
+
 - `Ctrl/Cmd + N` - New conversation
 - `Ctrl/Cmd + B` - Create branch from current message
 - `Ctrl/Cmd + K` - Focus search
@@ -153,6 +183,7 @@ echotrace/
 ## 🔧 Development
 
 ### Frontend Development
+
 ```bash
 cd frontend
 npm run dev          # Start dev server
@@ -161,6 +192,7 @@ npm run type-check   # Run TypeScript checks
 ```
 
 ### Backend Development
+
 ```bash
 cd backend
 source venv/bin/activate
@@ -168,9 +200,11 @@ python run.py        # Start with auto-reload
 ```
 
 ### Database
+
 The app uses SQLite by default. The database file is created automatically at `backend/echotrace.db`.
 
 To reset the database:
+
 ```bash
 rm backend/echotrace.db
 # Restart the backend server
@@ -179,6 +213,7 @@ rm backend/echotrace.db
 ## 🚀 Deployment
 
 ### Local Production Build
+
 ```bash
 # Build frontend
 cd frontend
@@ -189,6 +224,7 @@ npx serve dist
 ```
 
 ### Docker (Optional)
+
 ```bash
 # Build and run with Docker Compose
 docker-compose up --build
