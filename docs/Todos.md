@@ -1,0 +1,4 @@
+- finish out frontend rendering for AI elements
+  - hook up router and ability to see messages
+- navigation improvemenets
+- build out backend with SQLLite WASM -> rxDB for tooling
