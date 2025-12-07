@@ -1,4 +1,5 @@
 - finish out frontend rendering for AI elements
+  - [svelte ai elements](https://svelte-ai-elements.vercel.app/guides/svelte-5-ai-sdk-integration)
   - hook up router and ability to see messages
 - navigation improvemenets
 - build out backend with SQLLite WASM -> rxDB for tooling
