@@ -1,21 +1,42 @@
 # Architecture
 
 - Bun-powered dev environment
+
   - ultra-fast installs, test runner, and scripts
   - note: Bun is the runtime and package manager, but SvelteKit still uses Vite internally for bundling, HMR, SSR, and plugin integration
+
 - SvelteKit SPA architecture
+
   - routing, server endpoints, local-first operations
   - svelte-shadcn component library for consistent UI patterns
   - svelte stores reacting to DB + Tauri backend changes
   - relies on Vite as the build system; Bun does not replace Vite for SvelteKit
-- Tauri desktop shell
-  - secure Rust backend for Git, filesystem, and process integrations
-  - lightweight app bundle with auto-updatable commands
+
 - Local SQLite via SQLocal (WASM)
+
   - local-first persistence
   - DAG-based conversation + version modeling
+
 - No login required; all data local and user-owned
 - Fully open source; contributions welcome
+
+# Svelte Setup
+
+- Sveltekit 5 over regular Svelte
+- tailwind installed
+- drizzle orm
+- eslint
+- prettier
+- playright
+- typescript
+- all on vite
+- better sqlite3
+
+# Future Considerations
+
+- Tauri desktop shell (future, developing on web currently)
+  - secure Rust backend for Git, filesystem, and process integrations
+  - lightweight app bundle with auto-updatable commands
 
 # Other Considerations
 
