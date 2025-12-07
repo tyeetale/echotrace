@@ -38,6 +38,7 @@
 		"isomorphic-dompurify": "^2.33.0",
 		"runed": "^0.37.0",
 		"shiki": "^3.19.0",
+		"svelte-streamdown": "^3.0.1",
 		"svelte-toolbelt": "^0.10.6"
 	}
 }
