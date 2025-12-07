@@ -1,0 +1,4 @@
+- https://www.shadcn-svelte.com/docs/dark-mode/svelte
+- https://ai-sdk.dev/elements/components/prompt-input#installation
+- https://github.com/justkey007/tsc-alias
+- https://v2.tauri.app/concept/architecture/
