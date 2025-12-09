@@ -3,3 +3,4 @@
   - hook up router and ability to see messages
 - navigation improvemenets
 - build out backend with SQLLite WASM -> rxDB for tooling
+  - cancelled and using better sqlite3 since this is only running localhost wise
